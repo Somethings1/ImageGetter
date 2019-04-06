@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>image getter</title>
+  <style class="general">
+    * {
+      padding: 0;
+      margin: 0;
+      text-align: center;
+      color: white;
+      font-family: "Segoe UI Light"
+    }
+
+    body, input, button {
+      background: #141414;
+    }
+
+    img {
+      width: 800px;
+      height: auto;
+      margin: 10px;
+      border: 2px solid grey;
+    }
+
+    input {
+      width: 50%;
+      text-align: left;
+    }
+
+    button {
+      width: 10%;
+      color: orange;
+      cursor: pointer;
+      transition: .4s ease;
+    }  
+
+    button:hover {
+      background: orange;
+      color: white;
+    }
+
+    input,button {
+      display: inline-block;
+      padding: 10px;
+      margin: 20px;
+      border-radius: 500px;
+      font-size: 16px;
+      border: 2px solid orange;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin: 20px;
+    }
+
+    .signature {
+      font-size: 9px;
+      position: fixed;
+      bottom: 10px;
+      left: 10px;
+    }
+
+    input:focus, button:focus {
+      outline: none;
+    }
+
+    #imageHolder {
+      display: none;
+    }
+  </style>
+  <style class="loader">
+    .lds-roller {
+      display: inline-block;
+      position: relative;
+      width: 64px;
+      height: 64px;
+    }
+    .lds-roller div {
+      animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+      transform-origin: 32px 32px;
+    }
+    .lds-roller div:after {
+      content: " ";
+      display: block;
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #fff;
+      margin: -3px 0 0 -3px;
+    }
+    .lds-roller div:nth-child(1) {
+      animation-delay: -0.036s;
+    }
+    .lds-roller div:nth-child(1):after {
+      top: 50px;
+      left: 50px;
+    }
+    .lds-roller div:nth-child(2) {
+      animation-delay: -0.072s;
+    }
+    .lds-roller div:nth-child(2):after {
+      top: 54px;
+      left: 45px;
+    }
+    .lds-roller div:nth-child(3) {
+      animation-delay: -0.108s;
+    }
+    .lds-roller div:nth-child(3):after {
+      top: 57px;
+      left: 39px;
+    }
+    .lds-roller div:nth-child(4) {
+      animation-delay: -0.144s;
+    }
+    .lds-roller div:nth-child(4):after {
+      top: 58px;
+      left: 32px;
+    }
+    .lds-roller div:nth-child(5) {
+      animation-delay: -0.18s;
+    }
+    .lds-roller div:nth-child(5):after {
+      top: 57px;
+      left: 25px;
+    }
+    .lds-roller div:nth-child(6) {
+      animation-delay: -0.216s;
+    }
+    .lds-roller div:nth-child(6):after {
+      top: 54px;
+      left: 19px;
+    }
+    .lds-roller div:nth-child(7) {
+      animation-delay: -0.252s;
+    }
+    .lds-roller div:nth-child(7):after {
+      top: 50px;
+      left: 14px;
+    }
+    .lds-roller div:nth-child(8) {
+      animation-delay: -0.288s;
+    }
+    .lds-roller div:nth-child(8):after {
+      top: 45px;
+      left: 10px;
+    }
+    @keyframes lds-roller {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    #loader {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Visible items -->
+  <h1>Image getter tool</h1>
+  <input type="text" name="id" id="inp" placeholder="Url of image" autocomplete="off">
+  <button id="getImage">Get Images!</button>
+  <div id="imageHolder"></div>
+  <div class="signature">Made by Nguyen Trung Long. All rights reserved</div>
+
+  <!-- Functional items -->
+  <div id="loader">
+    <div class="lds-roller">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <div>Getting</div>
+  </div>
+  <script>
+    const modifyInput = url => url.slice(32).match(/[0-9]+/gi)[0];//Get the folder of image
+    const getImageFormat = url => url.slice(-3);//Jpg or Png
+
+    document.getElementById("getImage").addEventListener("click", function () {
+
+      //Display loading screen
+      document.getElementById("loader").style.display = "block";
+      setTimeout(function() {
+        document.getElementById("loader").style.display = "none";
+        document.getElementById("imageHolder").style.display = "block";
+      }, 6000);
+
+      //Variables definitions
+      let url = document.getElementById("inp").value;
+      let id = modifyInput(url);
+      let format = getImageFormat(url);
+
+      //Get Images
+      for (let i = 1; i <= 200; i++) {
+        document.getElementById("imageHolder").innerHTML += `
+          <img src="https://i.nhentai.net/galleries/${id}/${i}.${format}" onerror="this.parentNode.removeChild(this)" />
+        `;
+      }
+
+    })
+  </script>
+</body>
+
+</html>
